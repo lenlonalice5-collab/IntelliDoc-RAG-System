@@ -1,91 +1,242 @@
-# rag_local_ai
-本地知识库问答系统（RAG）项目，使用LangChain+Chroma+Ollama
-# 本地知识库问答系统 (RAG)
 
-> 一个基于 LangChain、Chroma、Ollama 的本地知识库问答系统，实现 PDF 文档上传、向量化检索和大模型智能回答。
+# 🚀 RAG Platform 2.0
 
----
+<p align="center">
+  <b>Enterprise-Level Local RAG Knowledge Base System</b><br>
+  基于本地大模型的企业级知识库问答系统（2.0版本）
+</p>
 
-## 功能特点
-
-- ✅ 本地运行，无需网络连接或 API Key  
-- ✅ 支持上传 PDF 文档，并自动解析文本  
-- ✅ 基于 Chroma 向量数据库进行相似度检索  
-- ✅ 使用 Ollama Qwen3 模型进行生成式问答  
-- ✅ Gradio Web 界面，简洁直观  
-- ✅ 支持多轮问答和上下文记忆  
-
----
-
-## 技术栈
-
-- **Python**  
-- **LangChain** (RAG + 文档加载 + Prompt 管理)  
-- **Chroma** (向量数据库)  
-- **Ollama** (本地大语言模型)  
-- **Gradio** (Web界面)  
-- **PDF2Image / RapidOCR** (扫描PDF OCR识别，可选)  
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.11-blue">
+  <img src="https://img.shields.io/badge/FastAPI-API-green">
+  <img src="https://img.shields.io/badge/Ollama-Local%20LLM-orange">
+  <img src="https://img.shields.io/badge/Chroma-VectorDB-purple">
+  <img src="https://img.shields.io/badge/Docker-Deploy-blue">
+</p>
 
 ---
 
-## 安装指南
+# 📖 1. Project Overview | 项目简介
 
-1. 克隆仓库：
+RAG Platform 2.0 是一个完整的本地知识库问答系统，基于大语言模型 + 向量数据库构建。
 
-```bash
-git clone https://github.com/你的用户名/你的仓库名.git
-cd 你的仓库名
+支持：
+
+- 📄 多PDF文档上传与解析
+- 📚 向量检索（RAG）
+- 🧠 本地大模型 Ollama 推理
+- 📌 精确引用页码
+- 💬 对话历史记录
+- ⚡ FastAPI 接口服务化
+- 🐳 Docker 一键部署
+
+---
+
+# ✨ 2. Key Features | 核心功能
+
+## 📄 Multi-PDF Knowledge Base
+- 支持多个 PDF 同时上传
+- 自动文本切分（chunking）
+- 自动向量化存储
+
+---
+
+## 🔍 RAG Retrieval System
+- 基于 Chroma 向量数据库
+- 语义检索 Top-K 文档
+- 提高回答准确性
+
+---
+
+## 🧠 Local LLM (Ollama)
+- 支持 Qwen / Llama 等本地模型
+- 完全离线运行
+- 无需 OpenAI API
+
+---
+
+## 📌 Source Citation (引用页码)
+- 每个答案返回：
+  - 文件名
+  - 页码
+- 提高可解释性
+
+---
+
+## 💬 Chat History
+- 自动记录问答历史
+- 支持后续扩展用户系统
+
+---
+
+## ⚡ FastAPI Backend
+- REST API接口化
+- 支持前后端分离
+- 可用于 Web / APP 调用
+
+---
+
+## 🐳 Docker Deployment
+- 一键容器化部署
+- 环境一致性保证
+- 支持云端部署
+
+---
+
+# 🏗️ 3. System Architecture | 系统架构
+
+```text
+User
+ ↓
+Gradio UI / FastAPI
+ ↓
+RAG Engine
+ ↓
+Vector DB (Chroma)
+ ↓
+Embedding Model (bge-small-zh)
+ ↓
+Ollama LLM (Qwen3 / Llama)
+````
+
+---
+
+# 📂 4. Project Structure
+
+```text
+RAG-Platform/
+│
+├── app.py                 # Gradio前端
+├── api.py                # FastAPI服务
+├── rag.py                # RAG核心逻辑
+├── chat_history.py      # 聊天历史管理
+├── requirements.txt
+│
+├── docs/                # PDF知识库
+├── uploads/             # 上传文件
+├── vector_db/           # 向量数据库
+├── history/             # 历史记录
+│
+└── Dockerfile
 ```
 
+---
 
-## 创建虚拟环境并激活：
+# 🚀 5. How to Run | 运行方式
+
+## 5.1 安装依赖
+
 ```bash
-python -m venv venv
-# Windows CMD
-venv\Scripts\activate.bat
-# 或 PowerShell
-venv\Scripts\Activate.ps1
-安装依赖：
 pip install -r requirements.txt
-# 或手动安装：
-pip install langchain langchain-ollama chromadb gradio pdf2image pillow rapidocr-onnxruntime
 ```
-## 下载 Ollama Qwen3 模型：
+
+---
+
+## 5.2 启动 Gradio
+
+```bash
+python app.py
 ```
-ollama run qwen3:8b
+
+访问：
+
 ```
-## 使用说明
-将 PDF 文档放入 docs/ 文件夹<br>
-运行应用：
-python app.py<br>
-打开浏览器访问：
-http://127.0.0.1:7860<br>
-在页面中输入问题，系统会基于上传的文档生成答案。
-项目结构<br>
-rag_project/<br>
-│<br>
-├─ app.py            # 主程序入口<br>
-├─ docs/             # PDF 文档存放目录<br>
-├─ vector_db/        # Chroma向量数据库（第一次运行后生成）<br>
-├─ venv/             # Python虚拟环境<br>
-├─ README.md<br>
-└─ requirements.txt<br>
-示例效果<br>
+http://127.0.0.1:7860
+```
 
-问题： 什么是决策树？<br>
+---
 
-回答： 根据文档第12页：决策树是一种监督学习算法，用于分类和回归……<br>
+## 5.3 启动 FastAPI
 
-升级计划:<br>
- 支持多个 PDF 同时上传<br>
- 输出答案引用页码<br>
- 增加聊天历史记录功能<br>
- Docker 容器化部署<br>
- FastAPI 接口扩展<br>
- 
-许可证<br>
-MIT License<br>
+```bash
+uvicorn api:app --reload
+```
 
-联系方式<br>
-邮箱：lenlonalice@gmail.com<br>
-GitHub：https://github.com/lenlonalice5-collab
+访问API文档：
+
+```
+http://127.0.0.1:8000/docs
+```
+
+---
+
+# 🐳 6. Docker Deployment
+
+## 6.1 构建镜像
+
+```bash
+docker build -t rag-platform .
+```
+
+---
+
+## 6.2 运行容器
+
+```bash
+docker run -p 8000:8000 rag-platform
+```
+
+---
+
+# 📌 7. API Example
+
+### 请求：
+
+```json
+POST /chat
+{
+  "question": "什么是决策树"
+}
+```
+
+### 返回：
+
+```json
+{
+  "answer": "...",
+  "references": [
+    "machine_learning.pdf 第12页"
+  ]
+}
+```
+
+---
+
+# 🧠 8. 2.0 Upgrade Summary | 2.0升级总结
+
+本版本（RAG Platform 2.0）实现：
+
+* ✔ 多PDF知识库支持
+* ✔ 向量检索增强（RAG）
+* ✔ 引用页码（可解释AI）
+* ✔ 聊天历史记录
+* ✔ FastAPI服务化
+* ✔ Docker容器化部署
+
+---
+
+# 🚀 9. Future Roadmap | 后续规划
+
+* Redis缓存优化
+* 多用户系统
+* 前端Vue版本
+* 权限管理
+* RAG Agent增强版
+
+---
+
+# 🧑‍💻 Author
+
+Built by **Lenlon**
+
+Focus:
+
+* AI Engineering
+* RAG Systems
+* LLM Applications
+
+---
+
+# 📜 License
+
+MIT License

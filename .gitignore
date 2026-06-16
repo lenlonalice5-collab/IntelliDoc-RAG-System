@@ -1,0 +1,8 @@
+venv/
+.git/
+.idea/
+__pycache__/
+vector_db/
+history/
+uploads/
+*.pdf

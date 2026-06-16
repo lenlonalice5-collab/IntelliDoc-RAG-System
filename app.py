@@ -1,88 +1,32 @@
-from langchain_community.document_loaders import PyPDFLoader
-
-loader = PyPDFLoader(
-    "docs/machine_learning.pdf"
-)
-
-docs = loader.load()
-
-print(len(docs))
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-
-splitter = RecursiveCharacterTextSplitter(
-    chunk_size=500,
-    chunk_overlap=50
-)
-
-chunks = splitter.split_documents(docs)
-
-print(len(chunks))
-from langchain_community.embeddings import HuggingFaceEmbeddings
-from langchain_community.vectorstores import Chroma
-
-embedding = HuggingFaceEmbeddings(
-    model_name="BAAI/bge-small-zh-v1.5"
-)
-
-db = Chroma.from_documents(
-    chunks,
-    embedding,
-    persist_directory="./vector_db"
-)
-from langchain_ollama import ChatOllama
-
-llm = ChatOllama(
-    model="qwen3:8b"
-)
-query = "什么是决策树"
-
-docs = db.similarity_search(
-    query,
-    k=3
-)
-
-for d in docs:
-    print(d.page_content)
-context = "\n".join(
-    [d.page_content for d in docs]
-)
-
-prompt = f"""
-根据以下内容回答：
-
-{context}
-
-问题：
-什么是决策树
-"""
-
-response = llm.invoke(prompt)
-
-print(response.content)
+from rag import *
+from chat_history import *
 import gradio as gr
 
+db = build_multi_pdf_db()
+
 def chat(question):
-    docs = db.similarity_search(
+
+    answer,references = ask_question(
+        db,
+        question
+    )
+
+    save_history(
         question,
-        k=3
+        answer
     )
 
-    context = "\n".join(
-        [d.page_content for d in docs]
-    )
+    return f"""
+{answer}
 
-    prompt = f"""
-    根据资料回答：
+================
 
-    {context}
+参考来源：
 
-    问题：
-    {question}
-    """
+{chr(10).join(references)}
+"""
 
-    result = llm.invoke(prompt)
 
-    return result.content
 
 ui = gr.Interface(
     fn=chat,
