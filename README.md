@@ -1,6 +1,5 @@
-
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=28&duration=2000&pause=500&color=7B68EE&center=true&vCenter=true&width=600&lines=📚+RAG+Platform+2.0;Enterprise+Knowledge+Base+System;Local+LLM+%2B+Vector+Retrieval" alt="Typing SVG" />
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=30&duration=2500&pause=500&color=7B68EE&center=true&vCenter=true&width=700&lines=📚+RAG+Platform+2.0;Enterprise+Knowledge+Base+System;Local+LLM+%2B+Vector+Retrieval" alt="Typing SVG" />
 </p>
 
 <p align="center">
